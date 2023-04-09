@@ -1,0 +1,28 @@
+version: "3.2"
+services:
+  db:
+    build: ./docker/db
+    environment:
+      POSTGRES_USER: docker_user
+      POSTGRES_PASSWORD: docker_pass
+      POSTGRES_DB: docker_db
+      PGDATA: /var/lib/postgresql/data/pgdata
+      TZ: Asia/Tokyo
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4:5.2
+    volumes:
+      - pgadmindata:/var/lib/pgadmin4/storage
+    environment:
+      PGADMIN_DEFAULT_EMAIL: root@example.com
+      PGADMIN_DEFAULT_PASSWORD: root
+      TZ: Asia/Tokyo
+    depends_on:
+      - db
+    ports:
+      - "5050:80"
+volumes:
+  dbdata:
+  pgadmindata:
